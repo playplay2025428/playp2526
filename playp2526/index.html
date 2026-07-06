@@ -13,7 +13,6 @@
     <style>
         body { font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif; color: #334155; }
         
-        /* 唯美的呼吸漸層背景板 */
         .animated-bg {
             background: linear-gradient(-45deg, #eef2ff, #f8fafc, #f0fdfa, #fdf4ff);
             background-size: 400% 400%;
@@ -25,29 +24,26 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* 唯美滾動條 */
         .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         
-        /* 聊天氣泡 */
+        /* 隱藏原生卷軸但保留滑動功能 (手機選單用) */
+        .hide-scrollbar-on-mobile::-webkit-scrollbar { display: none; }
+        .hide-scrollbar-on-mobile { -ms-overflow-style: none; scrollbar-width: none; }
+
         .chat-bubble-admin { background-color: #f1f5f9; color: #334155; border-bottom-left-radius: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
         .chat-bubble-user { background-image: linear-gradient(to right, #4f46e5, #6366f1); color: #ffffff; border-bottom-right-radius: 0; box-shadow: 0 2px 6px rgba(79,70,229,0.2); }
         
-        /* 絲滑淡入往上浮現動畫 (給卡片跟頁面用) */
         .fade-in-up { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(15px); }
-        @keyframes fadeInUp {
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-        /* Toast 動畫設定 */
         @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes slideOutRight { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }
         .toast-enter { animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .toast-exit { animation: slideOutRight 0.3s ease-in forwards; }
 
-        /* 隱藏 details 預設三角形 */
         details > summary { list-style: none; }
         details > summary::-webkit-details-marker { display: none; }
     </style>
@@ -59,7 +55,7 @@
 
     <header class="bg-indigo-900/85 backdrop-blur-md border-b border-indigo-500/20 text-white shadow-lg px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-4 sticky top-0 z-50 transition-all">
         <div class="flex items-center space-x-3">
-            <div class="w-12 h-12 bg-white rounded-xl shadow-md shadow-indigo-500/20 transform hover:rotate-6 transition-transform duration-300 flex items-center justify-center overflow-hidden">
+            <div class="w-12 h-12 bg-white rounded-xl shadow-md shadow-indigo-500/20 transform hover:rotate-6 transition-transform duration-300 flex items-center justify-center overflow-hidden shrink-0">
                 <img src="S__377659495_0.jpg" alt="伴玩星球 LOGO" class="w-full h-full object-cover">
             </div>
             <div>
@@ -68,28 +64,28 @@
             </div>
         </div>
         
-        <div class="bg-black/20 p-1 rounded-xl flex border border-white/10 shadow-inner">
-            <button id="tab-admin" onclick="switchView('admin')" class="px-5 py-2 rounded-lg font-bold text-sm transition-all duration-300 bg-white text-indigo-700 shadow-sm active:scale-95">
+        <div class="bg-black/20 p-1 rounded-xl flex border border-white/10 shadow-inner w-full sm:w-auto overflow-x-auto hide-scrollbar-on-mobile">
+            <button id="tab-admin" onclick="switchView('admin')" class="px-5 py-2 rounded-lg font-bold text-sm transition-all duration-300 bg-white text-indigo-700 shadow-sm active:scale-95 whitespace-nowrap">
                 <i class="fa-solid fa-user-shield mr-1.5"></i>管理員後台
             </button>
-            <button id="tab-companion" onclick="switchView('companion-login')" class="px-5 py-2 rounded-lg font-bold text-sm transition-all duration-300 text-indigo-100 hover:text-white hover:bg-white/10 active:scale-95">
+            <button id="tab-companion" onclick="switchView('companion-login')" class="px-5 py-2 rounded-lg font-bold text-sm transition-all duration-300 text-indigo-100 hover:text-white hover:bg-white/10 active:scale-95 whitespace-nowrap">
                 <i class="fa-solid fa-user-graduate mr-1.5"></i>伴玩人員入口
             </button>
             
-            <button id="btn-change-pwd" onclick="openChangePwdModal()" class="hidden ml-2 px-5 py-2 rounded-lg font-bold text-sm transition-all duration-300 bg-amber-500/90 hover:bg-amber-500 text-white shadow-sm active:scale-95 border border-amber-400/50">
+            <button id="btn-change-pwd" onclick="openChangePwdModal()" class="hidden ml-2 px-5 py-2 rounded-lg font-bold text-sm transition-all duration-300 bg-amber-500/90 hover:bg-amber-500 text-white shadow-sm active:scale-95 border border-amber-400/50 whitespace-nowrap">
                 <i class="fa-solid fa-key mr-1.5"></i>改密碼
             </button>
 
-            <button id="btn-logout" onclick="logoutAdmin()" class="hidden ml-2 px-5 py-2 rounded-lg font-bold text-sm transition-all duration-300 bg-rose-500/90 hover:bg-rose-500 text-white shadow-sm active:scale-95 border border-rose-400/50">
+            <button id="btn-logout" onclick="logoutAdmin()" class="hidden ml-2 px-5 py-2 rounded-lg font-bold text-sm transition-all duration-300 bg-rose-500/90 hover:bg-rose-500 text-white shadow-sm active:scale-95 border border-rose-400/50 whitespace-nowrap">
                 <i class="fa-solid fa-lock mr-1.5"></i>鎖定
             </button>
-            <button id="btn-comp-logout" onclick="logoutCompanion()" class="hidden ml-2 px-5 py-2 rounded-lg font-bold text-sm transition-all duration-300 bg-slate-600/90 hover:bg-slate-600 text-white shadow-sm active:scale-95 border border-slate-500/50">
+            <button id="btn-comp-logout" onclick="logoutCompanion()" class="hidden ml-2 px-5 py-2 rounded-lg font-bold text-sm transition-all duration-300 bg-slate-600/90 hover:bg-slate-600 text-white shadow-sm active:scale-95 border border-slate-500/50 whitespace-nowrap">
                 <i class="fa-solid fa-right-from-bracket mr-1.5"></i>登出
             </button>
         </div>
     </header>
 
-    <main class="flex-1 p-4 md:p-6 max-w-7xl w-full mx-auto relative z-0">
+    <main class="flex-1 p-4 md:p-6 max-w-7xl w-full mx-auto relative z-0 flex flex-col">
         
         <div id="view-admin-login" class="max-w-md mx-auto mt-16 bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-white p-10 text-center hidden fade-in-up">
             <div class="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner overflow-hidden border-4 border-indigo-50">
@@ -105,19 +101,19 @@
         </div>
 
         <div id="view-admin-dashboard" class="hidden space-y-6 fade-in-up">
-            <div class="flex space-x-6 border-b-2 border-slate-200/50">
-                <button id="admin-tab-users" onclick="switchAdminTab('users')" class="px-2 py-4 font-black text-lg text-indigo-600 border-b-4 border-indigo-600 transition -mb-[3px]">人員與派案管理</button>
-                <button id="admin-tab-resources" onclick="switchAdminTab('resources')" class="px-2 py-4 font-bold text-lg text-slate-400 border-b-4 border-transparent hover:text-indigo-500 transition -mb-[3px]">教材庫與 Q&A 管理</button>
+            <div class="flex space-x-6 border-b-2 border-slate-200/50 overflow-x-auto hide-scrollbar-on-mobile">
+                <button id="admin-tab-users" onclick="switchAdminTab('users')" class="px-2 py-4 font-black text-lg text-indigo-600 border-b-4 border-indigo-600 transition -mb-[3px] whitespace-nowrap">人員與派案管理</button>
+                <button id="admin-tab-resources" onclick="switchAdminTab('resources')" class="px-2 py-4 font-bold text-lg text-slate-400 border-b-4 border-transparent hover:text-indigo-500 transition -mb-[3px] whitespace-nowrap">教材庫與 Q&A 管理</button>
             </div>
 
             <div id="admin-content-users" class="space-y-6 fade-in-up">
                 <div class="bg-white/90 backdrop-blur-sm rounded-3xl shadow-sm border border-slate-100 p-6 md:p-8">
                     <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">
                         <h2 class="text-xl font-black text-slate-800 flex items-center">
-                            <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mr-3"><i class="fa-solid fa-magnifying-glass"></i></div>
+                            <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mr-3 shrink-0"><i class="fa-solid fa-magnifying-glass"></i></div>
                             智能媒合篩選引擎
                         </h2>
-                        <button onclick="resetData()" class="text-xs bg-rose-50 text-rose-600 px-3 py-2 rounded-lg font-bold border border-rose-100 hover:bg-rose-100 transition shadow-sm active:scale-95"><i class="fa-solid fa-rotate-right mr-1.5"></i>重置測試資料</button>
+                        <button onclick="resetData()" class="text-xs bg-rose-50 text-rose-600 px-3 py-2 rounded-lg font-bold border border-rose-100 hover:bg-rose-100 transition shadow-sm active:scale-95 whitespace-nowrap"><i class="fa-solid fa-rotate-right mr-1.5"></i>重置測試資料</button>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5">
                         <div class="md:col-span-2">
@@ -147,8 +143,8 @@
 
             <div id="admin-content-resources" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-8 fade-in-up">
                 <div class="lg:col-span-1">
-                    <form id="add-res-form" onsubmit="addSystemResource(event)" class="bg-white/90 backdrop-blur-sm p-8 rounded-3xl shadow-sm border border-slate-100 space-y-5 sticky top-24">
-                        <h3 class="text-xl font-black text-slate-800 flex items-center mb-6"><div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mr-3"><i class="fa-solid fa-cloud-arrow-up"></i></div>發布雲端內容</h3>
+                    <form id="add-res-form" onsubmit="addSystemResource(event)" class="bg-white/90 backdrop-blur-sm p-6 md:p-8 rounded-3xl shadow-sm border border-slate-100 space-y-5 lg:sticky lg:top-24">
+                        <h3 class="text-xl font-black text-slate-800 flex items-center mb-6"><div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mr-3 shrink-0"><i class="fa-solid fa-cloud-arrow-up"></i></div>發布雲端內容</h3>
                         
                         <div>
                             <label class="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-wider">資源類別*</label>
@@ -199,13 +195,13 @@
                 </div>
 
                 <div class="lg:col-span-2 space-y-8">
-                    <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-sm border border-slate-100">
-                        <h3 class="text-xl font-black text-slate-800 mb-6 flex items-center"><div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center mr-3"><i class="fa-solid fa-book-open"></i></div>教材、歌曲與實戰秘笈</h3>
+                    <div class="bg-white/80 backdrop-blur-sm p-6 md:p-8 rounded-3xl shadow-sm border border-slate-100">
+                        <h3 class="text-xl font-black text-slate-800 mb-6 flex items-center"><div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center mr-3 shrink-0"><i class="fa-solid fa-book-open"></i></div>教材、歌曲與實戰秘笈</h3>
                         <div id="admin-guide-list" class="space-y-4"></div>
                     </div>
                     
-                    <div class="bg-white/80 backdrop-blur-sm p-8 rounded-3xl shadow-sm border border-slate-100">
-                        <h3 class="text-xl font-black text-slate-800 mb-6 flex items-center"><div class="w-8 h-8 rounded-lg bg-sky-100 text-sky-600 flex items-center justify-center mr-3"><i class="fa-solid fa-comments"></i></div>常見問題 Q&A</h3>
+                    <div class="bg-white/80 backdrop-blur-sm p-6 md:p-8 rounded-3xl shadow-sm border border-slate-100">
+                        <h3 class="text-xl font-black text-slate-800 mb-6 flex items-center"><div class="w-8 h-8 rounded-lg bg-sky-100 text-sky-600 flex items-center justify-center mr-3 shrink-0"><i class="fa-solid fa-comments"></i></div>常見問題 Q&A</h3>
                         <div id="admin-qa-list" class="space-y-4"></div>
                     </div>
                 </div>
@@ -233,52 +229,52 @@
             </div>
         </div>
 
-        <div id="view-companion-dashboard" class="hidden h-[calc(100vh-140px)] flex flex-col md:flex-row gap-6 max-w-6xl mx-auto fade-in-up">
-            <div class="w-full md:w-1/3 bg-white/90 backdrop-blur-md rounded-3xl shadow-sm border border-slate-100 p-8 flex flex-col h-full shrink-0">
-                <div class="flex items-center space-x-5 mb-8 border-b-2 border-slate-50 pb-6">
-                    <div class="w-16 h-16 rounded-2xl flex items-center justify-center shadow-inner rotate-3 overflow-hidden border border-indigo-100">
+        <div id="view-companion-dashboard" class="hidden flex-col md:flex-row gap-4 md:gap-6 max-w-6xl mx-auto fade-in-up h-[calc(100dvh-120px)] md:h-[calc(100vh-120px)]">
+            <div class="w-full md:w-1/3 bg-white/90 backdrop-blur-md rounded-3xl shadow-sm border border-slate-100 p-5 md:p-8 flex flex-col shrink-0">
+                <div class="flex items-center space-x-4 md:space-x-5 mb-4 md:mb-6 border-b-2 border-slate-50 pb-4 md:pb-6 shrink-0">
+                    <div class="w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center shadow-inner rotate-3 overflow-hidden border border-indigo-100 shrink-0">
                         <img src="S__377659492_0.jpg" alt="大頭貼" class="w-full h-full object-cover">
                     </div>
-                    <div>
-                        <h2 class="text-2xl font-black text-slate-800" id="dash-comp-name">姓名</h2>
-                        <p class="text-sm font-bold text-slate-400 bg-slate-50 inline-block px-2 py-1 rounded-md mt-1" id="dash-comp-class">班級</p>
+                    <div class="overflow-hidden">
+                        <h2 class="text-xl md:text-2xl font-black text-slate-800 truncate" id="dash-comp-name">姓名</h2>
+                        <p class="text-xs md:text-sm font-bold text-slate-400 bg-slate-50 inline-block px-2 py-1 rounded-md mt-1 truncate" id="dash-comp-class">班級</p>
                     </div>
                 </div>
                 
-                <div class="space-y-3 flex-1">
-                    <button onclick="switchDashTab('schedule')" id="tab-btn-schedule" class="w-full text-left px-5 py-4 rounded-2xl font-bold transition-all duration-300 flex items-center bg-indigo-500 text-white shadow-md shadow-indigo-500/20 hover:-translate-y-1">
-                        <i class="fa-solid fa-calendar-check w-6 text-lg"></i> <span class="ml-2 text-base">我的派案行程</span>
+                <div class="flex flex-row md:flex-col gap-2 md:gap-3 overflow-x-auto custom-scrollbar pb-2 md:pb-0 flex-1 md:flex-none hide-scrollbar-on-mobile">
+                    <button onclick="switchDashTab('schedule')" id="tab-btn-schedule" class="flex-1 min-w-[130px] md:w-full justify-center md:justify-start px-4 py-3 md:px-5 md:py-4 rounded-2xl font-bold transition-all duration-300 flex items-center bg-indigo-500 text-white shadow-md shadow-indigo-500/20 md:hover:-translate-y-1 shrink-0">
+                        <i class="fa-solid fa-calendar-check md:w-6 text-base md:text-lg"></i> <span class="ml-2 text-sm md:text-base whitespace-nowrap">我的派案行程</span>
                     </button>
-                    <button onclick="switchDashTab('resources')" id="tab-btn-resources" class="w-full text-left px-5 py-4 rounded-2xl font-bold transition-all duration-300 flex items-center text-slate-500 hover:bg-white hover:text-indigo-600 hover:shadow-sm border border-transparent hover:border-slate-100 hover:-translate-y-1">
-                        <i class="fa-solid fa-book-open w-6 text-lg"></i> <span class="ml-2 text-base">資源與實戰指南</span>
+                    <button onclick="switchDashTab('resources')" id="tab-btn-resources" class="flex-1 min-w-[130px] md:w-full justify-center md:justify-start px-4 py-3 md:px-5 md:py-4 rounded-2xl font-bold transition-all duration-300 flex items-center text-slate-500 hover:bg-white hover:text-indigo-600 hover:shadow-sm border border-transparent hover:border-slate-100 md:hover:-translate-y-1 shrink-0">
+                        <i class="fa-solid fa-book-open md:w-6 text-base md:text-lg"></i> <span class="ml-2 text-sm md:text-base whitespace-nowrap">資源與實戰</span>
                     </button>
-                    <button onclick="switchDashTab('chat')" id="tab-btn-chat" class="w-full text-left px-5 py-4 rounded-2xl font-bold transition-all duration-300 flex items-center text-slate-500 hover:bg-white hover:text-indigo-600 hover:shadow-sm border border-transparent hover:border-slate-100 hover:-translate-y-1">
-                        <i class="fa-solid fa-headset w-6 text-lg"></i> <span class="ml-2 text-base mr-auto">聯繫公司窗口</span>
+                    <button onclick="switchDashTab('chat')" id="tab-btn-chat" class="flex-1 min-w-[130px] md:w-full justify-center md:justify-start px-4 py-3 md:px-5 md:py-4 rounded-2xl font-bold transition-all duration-300 flex items-center text-slate-500 hover:bg-white hover:text-indigo-600 hover:shadow-sm border border-transparent hover:border-slate-100 md:hover:-translate-y-1 shrink-0">
+                        <i class="fa-solid fa-headset md:w-6 text-base md:text-lg"></i> <span class="ml-2 text-sm md:text-base md:mr-auto whitespace-nowrap">聯繫公司窗口</span>
                     </button>
                 </div>
             </div>
 
-            <div class="w-full md:w-2/3 bg-white/90 backdrop-blur-md rounded-3xl shadow-sm border border-slate-100 overflow-hidden flex flex-col h-full">
+            <div class="w-full md:w-2/3 bg-white/90 backdrop-blur-md rounded-3xl shadow-sm border border-slate-100 overflow-hidden flex flex-col flex-1 relative">
                 
                 <div id="dash-content-schedule" class="flex-1 flex flex-col h-full overflow-hidden fade-in-up">
-                    <div class="bg-gradient-to-r from-indigo-50 to-white px-8 py-6 border-b border-indigo-100/50 flex justify-between items-center shrink-0">
-                        <h3 class="text-xl font-black text-indigo-900 flex items-center"><i class="fa-solid fa-calendar-day mr-3 text-indigo-500"></i>即將到來的任務</h3>
+                    <div class="bg-gradient-to-r from-indigo-50 to-white px-6 md:px-8 py-5 md:py-6 border-b border-indigo-100/50 flex justify-between items-center shrink-0">
+                        <h3 class="text-lg md:text-xl font-black text-indigo-900 flex items-center"><i class="fa-solid fa-calendar-day mr-3 text-indigo-500"></i>即將到來的任務</h3>
                     </div>
-                    <div class="p-6 md:p-8 overflow-y-auto custom-scrollbar flex-1 bg-slate-50/30 space-y-6" id="dash-schedule-list"></div>
+                    <div class="p-5 md:p-8 overflow-y-auto custom-scrollbar flex-1 bg-slate-50/30 space-y-6" id="dash-schedule-list"></div>
                 </div>
 
                 <div id="dash-content-chat" class="hidden flex-1 flex flex-col h-full overflow-hidden fade-in-up">
-                    <div class="bg-gradient-to-r from-teal-50 to-white px-8 py-6 border-b border-teal-100/50 shrink-0 flex justify-between items-center">
+                    <div class="bg-gradient-to-r from-teal-50 to-white px-6 md:px-8 py-5 md:py-6 border-b border-teal-100/50 shrink-0 flex justify-between items-center">
                         <div>
-                            <h3 class="text-xl font-black text-teal-900 flex items-center"><i class="fa-solid fa-headset mr-3 text-teal-500"></i>聯絡中心</h3>
+                            <h3 class="text-lg md:text-xl font-black text-teal-900 flex items-center"><i class="fa-solid fa-headset mr-3 text-teal-500"></i>聯絡中心</h3>
                             <p class="text-xs text-teal-600 font-bold mt-1">排班或派案問題專線，將有專人回覆</p>
                         </div>
                     </div>
-                    <div class="p-6 md:p-8 overflow-y-auto custom-scrollbar flex-1 bg-slate-50/50 flex flex-col space-y-5" id="dash-chat-history"></div>
-                    <div class="p-5 bg-white border-t border-slate-100 shrink-0">
+                    <div class="p-5 md:p-8 overflow-y-auto custom-scrollbar flex-1 bg-slate-50/50 flex flex-col space-y-5" id="dash-chat-history"></div>
+                    <div class="p-4 md:p-5 bg-white border-t border-slate-100 shrink-0">
                         <form onsubmit="sendChatMessage(event)" class="flex gap-3">
-                            <input type="text" id="chat-input" placeholder="輸入訊息..." required class="flex-1 border-2 border-slate-200 p-4 rounded-2xl outline-none focus:border-teal-500 text-sm transition font-medium bg-slate-50 focus:bg-white">
-                            <button type="submit" class="bg-gradient-to-r from-teal-500 to-emerald-500 text-white px-8 py-4 rounded-2xl font-black hover:from-teal-600 hover:to-emerald-600 transition-all shadow-md shadow-teal-500/20 active:scale-95">
+                            <input type="text" id="chat-input" placeholder="輸入訊息..." required class="flex-1 border-2 border-slate-200 p-3 md:p-4 rounded-2xl outline-none focus:border-teal-500 text-sm transition font-medium bg-slate-50 focus:bg-white">
+                            <button type="submit" class="bg-gradient-to-r from-teal-500 to-emerald-500 text-white px-6 md:px-8 py-3 md:py-4 rounded-2xl font-black hover:from-teal-600 hover:to-emerald-600 transition-all shadow-md shadow-teal-500/20 active:scale-95">
                                 <i class="fa-solid fa-paper-plane text-lg"></i>
                             </button>
                         </form>
@@ -286,83 +282,82 @@
                 </div>
 
                 <div id="dash-content-resources" class="hidden flex-1 flex flex-col h-full overflow-hidden bg-slate-50/50 fade-in-up">
-                    <div class="bg-gradient-to-r from-amber-50 to-orange-50 px-8 py-6 border-b border-amber-100/50 shrink-0 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div class="bg-gradient-to-r from-amber-50 to-orange-50 px-6 md:px-8 py-5 md:py-6 border-b border-amber-100/50 shrink-0 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-3">
                         <div>
-                            <h3 class="text-xl font-black text-amber-900 flex items-center"><i class="fa-solid fa-book-sparkles mr-3 text-amber-500"></i>教學資源庫</h3>
+                            <h3 class="text-lg md:text-xl font-black text-amber-900 flex items-center"><i class="fa-solid fa-book-sparkles mr-3 text-amber-500"></i>教學資源庫</h3>
                             <p class="text-xs text-amber-700 font-bold mt-1">專屬教材庫、SOP流程與常見問題</p>
                         </div>
-                        <div class="relative w-full md:w-64">
+                        <div class="relative w-full lg:w-64">
                             <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-amber-500/70"><i class="fa-solid fa-magnifying-glass"></i></span>
                             <input type="text" id="comp-res-search" oninput="renderCompanionResources()" placeholder="搜尋關鍵字 (例: SEL)" class="w-full pl-10 pr-4 py-2.5 text-sm bg-white border border-amber-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-sm transition font-bold text-amber-900 placeholder:text-amber-300">
                         </div>
                     </div>
-                    <div class="p-6 md:p-8 overflow-y-auto custom-scrollbar flex-1 space-y-10">
-                        
+                    <div class="p-5 md:p-8 overflow-y-auto custom-scrollbar flex-1 space-y-10">
                         <section>
-                            <h4 class="text-xl font-black text-slate-800 border-b-2 border-indigo-200 pb-3 mb-5 flex items-center"><div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center mr-3 text-sm"><i class="fa-solid fa-list-check"></i></div>接案與服務流程</h4>
+                            <h4 class="text-lg md:text-xl font-black text-slate-800 border-b-2 border-indigo-200 pb-3 mb-5 flex items-center"><div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center mr-3 text-sm shrink-0"><i class="fa-solid fa-list-check"></i></div>接案與服務流程</h4>
                             <div class="space-y-4">
-                                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex gap-5 hover:-translate-y-1 transition duration-300">
-                                    <div class="bg-gradient-to-br from-indigo-500 to-violet-500 text-white font-black w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-md">1</div>
+                                <div class="bg-white p-4 md:p-5 rounded-2xl shadow-sm border border-slate-100 flex gap-4 md:gap-5 hover:-translate-y-1 transition duration-300">
+                                    <div class="bg-gradient-to-br from-indigo-500 to-violet-500 text-white font-black w-8 h-8 md:w-10 md:h-10 rounded-xl flex items-center justify-center shrink-0 shadow-md">1</div>
                                     <div>
-                                        <h5 class="font-bold text-slate-800 text-base">確認派案與繳交服務費</h5>
-                                        <p class="text-sm text-slate-500 mt-1.5 leading-relaxed">公司提供家長需求及幼兒資料，確定媒合成功後，伴玩人員請先支付 10% 的服務費給公司。後續陪玩服務完成時，家長會直接將完整薪資支付給您。</p>
+                                        <h5 class="font-bold text-slate-800 text-sm md:text-base">確認派案與繳交服務費</h5>
+                                        <p class="text-xs md:text-sm text-slate-500 mt-1.5 leading-relaxed">公司提供家長需求及幼兒資料，確定媒合成功後，伴玩人員請先支付 10% 的服務費給公司。後續陪玩服務完成時，家長會直接將完整薪資支付給您。</p>
                                     </div>
                                 </div>
-                                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex gap-5 hover:-translate-y-1 transition duration-300">
-                                    <div class="bg-gradient-to-br from-indigo-500 to-violet-500 text-white font-black w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-md">2</div>
+                                <div class="bg-white p-4 md:p-5 rounded-2xl shadow-sm border border-slate-100 flex gap-4 md:gap-5 hover:-translate-y-1 transition duration-300">
+                                    <div class="bg-gradient-to-br from-indigo-500 to-violet-500 text-white font-black w-8 h-8 md:w-10 md:h-10 rounded-xl flex items-center justify-center shrink-0 shadow-md">2</div>
                                     <div>
-                                        <h5 class="font-bold text-slate-800 text-base">攜帶必備文件</h5>
-                                        <p class="text-sm text-slate-500 mt-1.5 leading-relaxed">服務當日，請務必隨身攜帶您的「托育人員登記證」以及「台中市居家托育服務中心規定之合約書」一式兩份。<br><span class="inline-block mt-2 px-3 py-1 bg-amber-50 text-amber-700 text-xs font-bold rounded-lg border border-amber-100">💡 建議先將登記證彩色影印，減少正本折損風險</span></p>
+                                        <h5 class="font-bold text-slate-800 text-sm md:text-base">攜帶必備文件</h5>
+                                        <p class="text-xs md:text-sm text-slate-500 mt-1.5 leading-relaxed">服務當日，請務必隨身攜帶您的「托育人員登記證」以及「台中市居家托育服務中心規定之合約書」一式兩份。<br><span class="inline-block mt-2 px-2 md:px-3 py-1 bg-amber-50 text-amber-700 text-[10px] md:text-xs font-bold rounded-lg border border-amber-100">💡 建議先將登記證彩色影印，減少正本折損風險</span></p>
                                     </div>
                                 </div>
-                                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex gap-5 hover:-translate-y-1 transition duration-300">
-                                    <div class="bg-gradient-to-br from-indigo-500 to-violet-500 text-white font-black w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-md">3</div>
+                                <div class="bg-white p-4 md:p-5 rounded-2xl shadow-sm border border-slate-100 flex gap-4 md:gap-5 hover:-translate-y-1 transition duration-300">
+                                    <div class="bg-gradient-to-br from-indigo-500 to-violet-500 text-white font-black w-8 h-8 md:w-10 md:h-10 rounded-xl flex items-center justify-center shrink-0 shadow-md">3</div>
                                     <div>
-                                        <h5 class="font-bold text-slate-800 text-base">現場簽約與核對</h5>
-                                        <p class="text-sm text-slate-500 mt-1.5 leading-relaxed">抵達家長處所時，請主動出示登記證。並請家長詳實填寫合約內容（包含身分證字號與幼兒資訊），以利回報居家托育服務中心及辦理保險。</p>
+                                        <h5 class="font-bold text-slate-800 text-sm md:text-base">現場簽約與核對</h5>
+                                        <p class="text-xs md:text-sm text-slate-500 mt-1.5 leading-relaxed">抵達家長處所時，請主動出示登記證。並請家長詳實填寫合約內容（包含身分證字號與幼兒資訊），以利回報居家托育服務中心及辦理保險。</p>
                                     </div>
                                 </div>
-                                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex gap-5 hover:-translate-y-1 transition duration-300">
-                                    <div class="bg-gradient-to-br from-indigo-500 to-violet-500 text-white font-black w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-md">4</div>
+                                <div class="bg-white p-4 md:p-5 rounded-2xl shadow-sm border border-slate-100 flex gap-4 md:gap-5 hover:-translate-y-1 transition duration-300">
+                                    <div class="bg-gradient-to-br from-indigo-500 to-violet-500 text-white font-black w-8 h-8 md:w-10 md:h-10 rounded-xl flex items-center justify-center shrink-0 shadow-md">4</div>
                                     <div>
-                                        <h5 class="font-bold text-slate-800 text-base">建檔與主動回報</h5>
-                                        <p class="text-sm text-slate-500 mt-1.5 leading-relaxed">簽署完成後，請妥善保管合約，並請立即拍照回報居托中心訪視輔導員，以利將資料匯入居托中心系統，正式啟動托育保險。</p>
+                                        <h5 class="font-bold text-slate-800 text-sm md:text-base">建檔與主動回報</h5>
+                                        <p class="text-xs md:text-sm text-slate-500 mt-1.5 leading-relaxed">簽署完成後，請妥善保管合約，並請立即拍照回報居托中心訪視輔導員，以利將資料匯入居托中心系統，正式啟動托育保險。</p>
                                     </div>
                                 </div>
                             </div>
                         </section>
 
                         <section>
-                            <h4 class="text-xl font-black text-slate-800 border-b-2 border-rose-200 pb-3 mb-5 flex items-center"><div class="w-8 h-8 rounded-lg bg-rose-100 text-rose-600 flex items-center justify-center mr-3 text-sm"><i class="fa-solid fa-shield-halved"></i></div>專業人員服務守則</h4>
-                            <ul class="space-y-4 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
-                                <li class="flex items-start"><i class="fa-solid fa-circle-check text-rose-400 mt-1 mr-4 text-lg"></i><div><span class="font-black text-slate-700 block mb-1">證照與資格</span><span class="text-sm text-slate-500 leading-relaxed">請確保您的「居家托育服務登記證」在有效期限內，並依規定完成每年在職訓練。</span></div></li>
-                                <li class="flex items-start"><i class="fa-solid fa-circle-check text-rose-400 mt-1 mr-4 text-lg"></i><div><span class="font-black text-slate-700 block mb-1">界線與專業</span><span class="text-sm text-slate-500 leading-relaxed">服務內容以「幼兒陪伴、安全照顧」為主。若家長要求超出合約範圍之勞務（如打掃洗碗），請委婉說明並回報公司。</span></div></li>
-                                <li class="flex items-start"><i class="fa-solid fa-circle-check text-rose-400 mt-1 mr-4 text-lg"></i><div><span class="font-black text-slate-700 block mb-1">緊急狀況處理</span><span class="text-sm text-slate-500 leading-relaxed">若發生幼兒意外，請第一時間聯絡家長或撥打 119，並立即通報公司。只要合約填寫完整，保險皆會啟動理賠程序。</span></div></li>
+                            <h4 class="text-lg md:text-xl font-black text-slate-800 border-b-2 border-rose-200 pb-3 mb-5 flex items-center"><div class="w-8 h-8 rounded-lg bg-rose-100 text-rose-600 flex items-center justify-center mr-3 text-sm shrink-0"><i class="fa-solid fa-shield-halved"></i></div>專業人員服務守則</h4>
+                            <ul class="space-y-4 bg-white p-5 md:p-6 rounded-2xl border border-slate-100 shadow-sm">
+                                <li class="flex items-start"><i class="fa-solid fa-circle-check text-rose-400 mt-1 mr-3 text-base md:text-lg shrink-0"></i><div><span class="font-black text-slate-700 block mb-1 text-sm md:text-base">證照與資格</span><span class="text-xs md:text-sm text-slate-500 leading-relaxed">請確保您的「居家托育服務登記證」在有效期限內，並依規定完成每年在職訓練。</span></div></li>
+                                <li class="flex items-start"><i class="fa-solid fa-circle-check text-rose-400 mt-1 mr-3 text-base md:text-lg shrink-0"></i><div><span class="font-black text-slate-700 block mb-1 text-sm md:text-base">界線與專業</span><span class="text-xs md:text-sm text-slate-500 leading-relaxed">服務內容以「幼兒陪伴、安全照顧」為主。若家長要求超出合約範圍之勞務（如打掃洗碗），請委婉說明並回報公司。</span></div></li>
+                                <li class="flex items-start"><i class="fa-solid fa-circle-check text-rose-400 mt-1 mr-3 text-base md:text-lg shrink-0"></i><div><span class="font-black text-slate-700 block mb-1 text-sm md:text-base">緊急狀況處理</span><span class="text-xs md:text-sm text-slate-500 leading-relaxed">若發生幼兒意外，請第一時間聯絡家長或撥打 119，並立即通報公司。只要合約填寫完整，保險皆會啟動理賠程序。</span></div></li>
                             </ul>
                         </section>
 
                         <section>
-                            <h4 class="text-xl font-black text-slate-800 border-b-2 border-emerald-200 pb-3 mb-5 flex items-center"><div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center mr-3 text-sm"><i class="fa-solid fa-folder-open"></i></div>雲端教案與教材</h4>
+                            <h4 class="text-lg md:text-xl font-black text-slate-800 border-b-2 border-emerald-200 pb-3 mb-5 flex items-center"><div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center mr-3 text-sm shrink-0"><i class="fa-solid fa-folder-open"></i></div>雲端教案與教材</h4>
                             <div id="comp-lesson-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
                         </section>
 
                         <section>
-                            <h4 class="text-xl font-black text-slate-800 border-b-2 border-pink-200 pb-3 mb-5 flex items-center"><div class="w-8 h-8 rounded-lg bg-pink-100 text-pink-600 flex items-center justify-center mr-3 text-sm"><i class="fa-solid fa-music"></i></div>歌曲與律動音檔</h4>
+                            <h4 class="text-lg md:text-xl font-black text-slate-800 border-b-2 border-pink-200 pb-3 mb-5 flex items-center"><div class="w-8 h-8 rounded-lg bg-pink-100 text-pink-600 flex items-center justify-center mr-3 text-sm shrink-0"><i class="fa-solid fa-music"></i></div>歌曲與律動音檔</h4>
                             <div id="comp-song-list" class="space-y-4"></div>
                         </section>
 
                         <section>
-                            <h4 class="text-xl font-black text-slate-800 border-b-2 border-purple-200 pb-3 mb-5 flex items-center"><div class="w-8 h-8 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center mr-3 text-sm"><i class="fa-solid fa-book"></i></div>繪本推薦庫</h4>
+                            <h4 class="text-lg md:text-xl font-black text-slate-800 border-b-2 border-purple-200 pb-3 mb-5 flex items-center"><div class="w-8 h-8 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center mr-3 text-sm shrink-0"><i class="fa-solid fa-book"></i></div>繪本推薦庫</h4>
                             <div id="comp-book-list" class="space-y-4"></div>
                         </section>
 
                         <section>
-                            <h4 class="text-xl font-black text-slate-800 border-b-2 border-amber-200 pb-3 mb-5 flex items-center"><div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center mr-3 text-sm"><i class="fa-solid fa-lightbulb"></i></div>伴玩實戰秘笈</h4>
+                            <h4 class="text-lg md:text-xl font-black text-slate-800 border-b-2 border-amber-200 pb-3 mb-5 flex items-center"><div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center mr-3 text-sm shrink-0"><i class="fa-solid fa-lightbulb"></i></div>伴玩實戰秘笈</h4>
                             <div id="comp-tip-list" class="space-y-3"></div>
                         </section>
 
                         <section>
-                            <h4 class="text-xl font-black text-slate-800 border-b-2 border-sky-200 pb-3 mb-5 flex items-center"><div class="w-8 h-8 rounded-lg bg-sky-100 text-sky-600 flex items-center justify-center mr-3 text-sm"><i class="fa-solid fa-comments"></i></div>常見問題 Q&A</h4>
+                            <h4 class="text-lg md:text-xl font-black text-slate-800 border-b-2 border-sky-200 pb-3 mb-5 flex items-center"><div class="w-8 h-8 rounded-lg bg-sky-100 text-sky-600 flex items-center justify-center mr-3 text-sm shrink-0"><i class="fa-solid fa-comments"></i></div>常見問題 Q&A</h4>
                             <div id="comp-qa-list" class="space-y-3"></div>
                         </section>
 
@@ -459,7 +454,7 @@
                 <h3 class="text-lg font-black text-indigo-900" id="edit-title">全面編輯人員資料</h3>
                 <button onclick="closeModal('modal-edit')" class="w-8 h-8 rounded-full bg-slate-100 text-slate-400 hover:text-slate-600 hover:bg-slate-200 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div class="p-8 space-y-8 text-sm overflow-y-auto custom-scrollbar">
+            <div class="p-6 md:p-8 space-y-8 text-sm overflow-y-auto custom-scrollbar">
                 <input type="hidden" id="edit-id">
                 <div>
                     <h4 class="font-black text-indigo-600 mb-4 pb-2 border-b border-slate-100 text-base flex items-center"><i class="fa-solid fa-1 text-xs bg-indigo-100 w-5 h-5 rounded-full flex items-center justify-center mr-2"></i>基本資料</h4>
@@ -490,6 +485,7 @@
                         <div class="col-span-3"><label class="block text-xs font-bold text-slate-500 mb-1.5">核心專長</label><input type="text" id="edit-skills" class="w-full border-2 border-slate-200 p-2.5 rounded-xl outline-none focus:border-indigo-500 transition"></div>
                         <div><label class="block text-xs font-bold text-slate-500 mb-1.5">定價時薪</label><input type="number" id="edit-wage" class="w-full border-2 border-slate-200 p-2.5 rounded-xl outline-none focus:border-indigo-500 transition font-bold text-indigo-600"></div>
                         <div class="col-span-2"><label class="block text-xs font-bold text-slate-500 mb-1.5">具備證照</label><input type="text" id="edit-license" class="w-full border-2 border-slate-200 p-2.5 rounded-xl outline-none focus:border-indigo-500 transition"></div>
+                        
                         <div class="col-span-3 bg-slate-50 p-4 rounded-xl border border-slate-100 flex flex-wrap gap-4 items-end">
                             <div class="flex-1"><label class="block text-xs font-bold text-slate-500 mb-1.5">中市托育登記證</label>
                                 <select id="edit-tc-cert" onchange="toggleEditDistrict()" class="w-full border-2 border-slate-200 p-2.5 rounded-xl outline-none focus:border-indigo-500 transition bg-white">
@@ -502,6 +498,7 @@
                                 </select>
                             </div>
                         </div>
+
                         <div><label class="block text-xs font-bold text-slate-500 mb-1.5">接受小月齡</label><select id="edit-infant" class="w-full border-2 border-slate-200 p-2.5 rounded-xl outline-none focus:border-indigo-500 transition"><option value="false">否</option><option value="true">是</option></select></div>
                         <div><label class="block text-xs font-bold text-slate-500 mb-1.5">有無經驗</label><select id="edit-exp" class="w-full border-2 border-slate-200 p-2.5 rounded-xl outline-none focus:border-indigo-500 transition"><option value="false">無經驗</option><option value="true">有經驗</option></select></div>
                         <div><label class="block text-xs font-bold text-slate-500 mb-1.5">交通方式</label><input type="text" id="edit-transport" class="w-full border-2 border-slate-200 p-2.5 rounded-xl outline-none focus:border-indigo-500 transition"></div>
@@ -524,24 +521,24 @@
                 <button onclick="closeModal('modal-appointments')" class="w-8 h-8 rounded-full bg-slate-100 text-slate-400 hover:text-slate-600 hover:bg-slate-200 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="flex flex-col md:flex-row overflow-hidden flex-1">
-                <div class="w-full md:w-5/12 bg-slate-50/50 p-8 border-r border-slate-100 overflow-y-auto custom-scrollbar">
+                <div class="w-full md:w-5/12 bg-slate-50/50 p-6 md:p-8 border-r border-slate-100 overflow-y-auto custom-scrollbar">
                     <h4 class="font-black text-sm text-slate-800 mb-5 border-b-2 border-teal-100 pb-2 inline-block"><i class="fa-solid fa-plus mr-1.5 text-teal-600"></i>新增任務</h4>
                     <form id="appt-form" onsubmit="addAppointment(event)" class="space-y-4">
                         <input type="hidden" id="appt-comp-id">
-                        <div><label class="block text-[11px] font-bold text-slate-500 mb-1.5">預約日期*</label><input type="date" id="appt-date" required class="w-full border-2 border-slate-200 p-2.5 rounded-xl outline-none focus:border-teal-500 text-sm transition"></div>
-                        <div><label class="block text-[11px] font-bold text-slate-500 mb-1.5">預約時段 (例: 14:00 - 17:00)*</label><input type="text" id="appt-time" placeholder="14:00 - 17:00" required class="w-full border-2 border-slate-200 p-2.5 rounded-xl outline-none focus:border-teal-500 text-sm transition"></div>
-                        <div><label class="block text-[11px] font-bold text-slate-500 mb-1.5">家長姓名*</label><input type="text" id="appt-parent" required class="w-full border-2 border-slate-200 p-2.5 rounded-xl outline-none focus:border-teal-500 text-sm transition"></div>
+                        <div><label class="block text-[11px] font-bold text-slate-500 mb-1.5">預約日期*</label><input type="date" id="appt-date" required class="w-full border-2 border-slate-200 p-2.5 rounded-xl outline-none focus:border-teal-500 text-sm transition bg-white"></div>
+                        <div><label class="block text-[11px] font-bold text-slate-500 mb-1.5">預約時段 (例: 14:00 - 17:00)*</label><input type="text" id="appt-time" placeholder="14:00 - 17:00" required class="w-full border-2 border-slate-200 p-2.5 rounded-xl outline-none focus:border-teal-500 text-sm transition bg-white"></div>
+                        <div><label class="block text-[11px] font-bold text-slate-500 mb-1.5">家長姓名*</label><input type="text" id="appt-parent" required class="w-full border-2 border-slate-200 p-2.5 rounded-xl outline-none focus:border-teal-500 text-sm transition bg-white"></div>
                         <div class="grid grid-cols-2 gap-3">
-                            <div><label class="block text-[11px] font-bold text-slate-500 mb-1.5">幼兒姓名*</label><input type="text" id="appt-child" required class="w-full border-2 border-slate-200 p-2.5 rounded-xl outline-none focus:border-teal-500 text-sm transition"></div>
-                            <div><label class="block text-[11px] font-bold text-slate-500 mb-1.5">幼兒年齡*</label><input type="text" id="appt-age" placeholder="3歲2個月" required class="w-full border-2 border-slate-200 p-2.5 rounded-xl outline-none focus:border-teal-500 text-sm transition"></div>
+                            <div><label class="block text-[11px] font-bold text-slate-500 mb-1.5">幼兒姓名*</label><input type="text" id="appt-child" required class="w-full border-2 border-slate-200 p-2.5 rounded-xl outline-none focus:border-teal-500 text-sm transition bg-white"></div>
+                            <div><label class="block text-[11px] font-bold text-slate-500 mb-1.5">幼兒年齡*</label><input type="text" id="appt-age" placeholder="3歲2個月" required class="w-full border-2 border-slate-200 p-2.5 rounded-xl outline-none focus:border-teal-500 text-sm transition bg-white"></div>
                         </div>
-                        <div><label class="block text-[11px] font-bold text-slate-500 mb-1.5">注意事項*</label><textarea id="appt-routine" rows="2" placeholder="午休、過敏等..." required class="w-full border-2 border-slate-200 p-2.5 rounded-xl outline-none focus:border-teal-500 text-sm resize-none transition custom-scrollbar"></textarea></div>
-                        <div><label class="block text-[11px] font-bold text-slate-500 mb-1.5">伴玩地址*</label><input type="text" id="appt-address" required class="w-full border-2 border-slate-200 p-2.5 rounded-xl outline-none focus:border-teal-500 text-sm transition"></div>
+                        <div><label class="block text-[11px] font-bold text-slate-500 mb-1.5">注意事項*</label><textarea id="appt-routine" rows="2" placeholder="午休、過敏等..." required class="w-full border-2 border-slate-200 p-2.5 rounded-xl outline-none focus:border-teal-500 text-sm resize-none transition custom-scrollbar bg-white"></textarea></div>
+                        <div><label class="block text-[11px] font-bold text-slate-500 mb-1.5">伴玩地址*</label><input type="text" id="appt-address" required class="w-full border-2 border-slate-200 p-2.5 rounded-xl outline-none focus:border-teal-500 text-sm transition bg-white"></div>
                         <div><label class="block text-[11px] font-black text-teal-600 mb-1.5">核定時薪*</label><input type="number" id="appt-wage" required class="w-full border-2 border-teal-200 bg-teal-50/30 p-2.5 rounded-xl outline-none focus:border-teal-500 text-sm font-bold text-teal-700 transition"></div>
                         <button type="submit" class="w-full bg-teal-600 text-white font-bold py-3.5 rounded-xl mt-4 hover:bg-teal-700 transition shadow-md active:scale-95 text-sm">發送派案通知</button>
                     </form>
                 </div>
-                <div class="w-full md:w-7/12 p-8 overflow-y-auto custom-scrollbar bg-white">
+                <div class="w-full md:w-7/12 p-6 md:p-8 overflow-y-auto custom-scrollbar bg-white">
                     <h4 class="font-black text-sm text-slate-800 mb-5 flex justify-between items-center border-b-2 border-slate-100 pb-2">
                         <span><i class="fa-solid fa-list mr-1.5 text-slate-400"></i>已排程任務</span>
                         <span id="appt-count" class="text-xs bg-slate-100 px-3 py-1 rounded-lg text-slate-500">共 0 筆</span>
@@ -559,11 +556,11 @@
                 <button onclick="closeModal('modal-admin-chat')" class="w-8 h-8 rounded-full bg-slate-100 text-slate-400 hover:text-slate-600 hover:bg-slate-200 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="p-6 md:p-8 overflow-y-auto custom-scrollbar flex-1 bg-slate-50/50 flex flex-col space-y-5" id="admin-chat-history"></div>
-            <div class="p-5 bg-white border-t border-slate-100 shrink-0">
+            <div class="p-4 md:p-5 bg-white border-t border-slate-100 shrink-0">
                 <form onsubmit="sendAdminChatMessage(event)" class="flex gap-3">
                     <input type="hidden" id="admin-chat-comp-id">
-                    <input type="text" id="admin-chat-input" placeholder="回覆訊息..." required class="flex-1 border-2 border-slate-200 p-4 rounded-2xl outline-none focus:border-sky-500 transition font-medium bg-slate-50 focus:bg-white">
-                    <button type="submit" class="bg-sky-600 text-white px-8 py-4 rounded-2xl font-bold hover:bg-sky-700 transition shadow-md shadow-sky-500/20 active:scale-95 whitespace-nowrap">
+                    <input type="text" id="admin-chat-input" placeholder="回覆訊息..." required class="flex-1 border-2 border-slate-200 p-3 md:p-4 rounded-2xl outline-none focus:border-sky-500 transition font-medium bg-slate-50 focus:bg-white">
+                    <button type="submit" class="bg-sky-600 text-white px-6 md:px-8 py-3 md:py-4 rounded-2xl font-bold hover:bg-sky-700 transition shadow-md shadow-sky-500/20 active:scale-95 whitespace-nowrap">
                         發送通知 <i class="fa-solid fa-paper-plane ml-1"></i>
                     </button>
                 </form>
@@ -590,7 +587,7 @@
     </div>
 
     <div id="modal-res-edit" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4 transition-all">
-        <div class="bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl border border-white w-full max-w-lg p-8 fade-in-up max-h-[90vh] overflow-y-auto custom-scrollbar">
+        <div class="bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl border border-white w-full max-w-lg p-6 md:p-8 fade-in-up max-h-[90vh] overflow-y-auto custom-scrollbar">
             <div class="flex justify-between items-center mb-6 border-b-2 border-indigo-50 pb-3">
                 <h3 class="text-lg font-black text-indigo-900"><i class="fa-solid fa-pen-to-square mr-2 text-indigo-500"></i>編輯雲端內容</h3>
                 <button onclick="closeModal('modal-res-edit')" class="w-8 h-8 rounded-full bg-slate-100 text-slate-400 hover:text-slate-600 hover:bg-slate-200 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
@@ -810,8 +807,8 @@
             const btnAdmin = document.getElementById('tab-admin');
             const btnComp = document.getElementById('tab-companion');
 
-            const activeBtnClass = "px-5 py-2 rounded-lg font-bold text-sm transition-all duration-300 bg-white text-indigo-700 shadow-sm active:scale-95";
-            const inactiveBtnClass = "px-5 py-2 rounded-lg font-bold text-sm transition-all duration-300 text-indigo-100 hover:text-white hover:bg-white/10 active:scale-95";
+            const activeBtnClass = "px-5 py-2 rounded-lg font-bold text-sm transition-all duration-300 bg-white text-indigo-700 shadow-sm active:scale-95 whitespace-nowrap";
+            const inactiveBtnClass = "px-5 py-2 rounded-lg font-bold text-sm transition-all duration-300 text-indigo-100 hover:text-white hover:bg-white/10 active:scale-95 whitespace-nowrap";
 
             if (view === 'admin') {
                 btnAdmin.className = activeBtnClass;
@@ -903,8 +900,8 @@
             const contentUsers = document.getElementById('admin-content-users');
             const contentRes = document.getElementById('admin-content-resources');
 
-            const activeClass = "px-2 py-4 font-black text-lg text-indigo-600 border-b-4 border-indigo-600 transition -mb-[3px]";
-            const inactiveClass = "px-2 py-4 font-bold text-lg text-slate-400 border-b-4 border-transparent hover:text-indigo-500 transition -mb-[3px]";
+            const activeClass = "px-2 py-4 font-black text-lg text-indigo-600 border-b-4 border-indigo-600 transition -mb-[3px] whitespace-nowrap";
+            const inactiveClass = "px-2 py-4 font-bold text-lg text-slate-400 border-b-4 border-transparent hover:text-indigo-500 transition -mb-[3px] whitespace-nowrap";
 
             if (tab === 'users') {
                 btnUsers.className = activeClass;
@@ -1078,11 +1075,9 @@
             
             if(!lessonList) return; 
 
-            // ★ 取得搜尋關鍵字
             const searchInput = document.getElementById('comp-res-search');
             const kw = searchInput ? searchInput.value.toLowerCase().trim() : '';
 
-            // 資源過濾邏輯
             const filterRes = (r) => {
                 if (!kw) return true;
                 const fields = [r.title, r.content, r.category, r.author, r.creator].map(f => (f || '').toLowerCase());
@@ -1098,26 +1093,26 @@
             lessonList.innerHTML = lessons.length ? lessons.map(r => `
                 <a href="${r.link}" target="_blank" class="block bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md hover:-translate-y-1 transition group fade-in-up">
                     <div class="flex items-center text-indigo-700 font-bold">
-                        <div class="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center mr-3 group-hover:bg-indigo-600 group-hover:text-white transition"><i class="fa-solid fa-file-pdf"></i></div>
-                        <span class="flex-1 truncate">${r.title}</span>
-                        <i class="fa-solid fa-arrow-up-right-from-square text-indigo-300 text-sm"></i>
+                        <div class="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center mr-3 group-hover:bg-indigo-600 group-hover:text-white transition shrink-0"><i class="fa-solid fa-file-pdf"></i></div>
+                        <span class="flex-1 truncate text-sm md:text-base">${r.title}</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-indigo-300 text-sm ml-2"></i>
                     </div>
                 </a>
             `).join('') : `<p class="text-sm text-slate-400 py-2 col-span-2">${kw ? '找不到符合搜尋的教案。' : '尚無教案資料。'}</p>`;
 
             songList.innerHTML = songs.length ? songs.map((r) => `
                 <details class="bg-white rounded-2xl shadow-sm border border-slate-100 group fade-in-up" ${kw ? 'open' : ''}>
-                    <summary class="font-bold text-slate-700 p-5 cursor-pointer outline-none flex justify-between items-center hover:bg-pink-50/50 rounded-2xl transition text-sm md:text-base leading-snug">
+                    <summary class="font-bold text-slate-700 p-4 md:p-5 cursor-pointer outline-none flex justify-between items-center hover:bg-pink-50/50 rounded-2xl transition text-sm md:text-base leading-snug">
                         <div class="flex items-center truncate pr-4">
                             <span class="bg-pink-100 text-pink-600 text-xs px-2 py-1 rounded mr-3 shrink-0"><i class="fa-solid fa-play"></i></span>
                             <span class="truncate">${r.title}</span>
                         </div>
                         <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center shrink-0 group-hover:bg-pink-100 transition"><i class="fa-solid fa-chevron-down text-pink-500 group-open:rotate-180 transition-transform"></i></div>
                     </summary>
-                    <div class="p-6 pt-0 border-t border-slate-50 mt-1">
+                    <div class="p-5 md:p-6 pt-0 border-t border-slate-50 mt-1">
                         <div class="flex flex-wrap gap-2 mb-4 mt-3">
-                            ${r.creator ? `<span class="bg-slate-100 text-slate-600 text-xs px-2 py-1 rounded font-bold"><i class="fa-solid fa-user-pen mr-1"></i>${r.creator}</span>` : ''}
-                            ${r.link ? `<a href="${r.link}" target="_blank" class="bg-pink-50 text-pink-600 text-xs px-2 py-1 rounded font-bold hover:bg-pink-100 transition"><i class="fa-solid fa-link mr-1"></i>收聽連結</a>` : ''}
+                            ${r.creator ? `<span class="bg-slate-100 text-slate-600 text-xs px-2.5 py-1 rounded-md font-bold border border-slate-200"><i class="fa-solid fa-user-pen mr-1"></i>${r.creator}</span>` : ''}
+                            ${r.link ? `<a href="${r.link}" target="_blank" class="bg-pink-50 text-pink-600 text-xs px-2.5 py-1 rounded-md font-bold hover:bg-pink-100 transition border border-pink-100"><i class="fa-solid fa-link mr-1"></i>收聽連結</a>` : ''}
                         </div>
                         <div class="text-sm text-slate-600 leading-relaxed bg-slate-50/50 p-4 rounded-xl border border-slate-100">
                             ${(r.content||'').replace(/\n/g, '<br>')}
@@ -1128,20 +1123,20 @@
 
             bookList.innerHTML = books.length ? books.map((r) => `
                 <details class="bg-white rounded-2xl shadow-sm border border-slate-100 group fade-in-up" ${kw ? 'open' : ''}>
-                    <summary class="font-bold text-slate-700 p-5 cursor-pointer outline-none flex justify-between items-center hover:bg-purple-50/50 rounded-2xl transition text-sm md:text-base leading-snug">
+                    <summary class="font-bold text-slate-700 p-4 md:p-5 cursor-pointer outline-none flex justify-between items-center hover:bg-purple-50/50 rounded-2xl transition text-sm md:text-base leading-snug">
                         <div class="flex items-center truncate pr-4">
                             <span class="bg-purple-100 text-purple-600 text-xs px-2 py-1 rounded mr-3 shrink-0"><i class="fa-solid fa-book-open-reader"></i></span>
                             <span class="truncate">${r.title}</span>
                         </div>
                         <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center shrink-0 group-hover:bg-purple-100 transition"><i class="fa-solid fa-chevron-down text-purple-500 group-open:rotate-180 transition-transform"></i></div>
                     </summary>
-                    <div class="p-6 pt-0 border-t border-slate-50 mt-1">
+                    <div class="p-5 md:p-6 pt-0 border-t border-slate-50 mt-1">
                         <div class="flex flex-wrap gap-2 mb-4 mt-3">
-                            ${r.category ? `<span class="bg-indigo-50 text-indigo-600 text-xs px-2 py-1 rounded font-bold border border-indigo-100"><i class="fa-solid fa-tag mr-1"></i>${r.category}</span>` : ''}
-                            ${r.author ? `<span class="bg-slate-50 text-slate-600 text-xs px-2 py-1 rounded border border-slate-200"><i class="fa-solid fa-pen-nib mr-1"></i>${r.author}</span>` : ''}
-                            ${r.publisher ? `<span class="bg-slate-50 text-slate-600 text-xs px-2 py-1 rounded border border-slate-200"><i class="fa-solid fa-building mr-1"></i>${r.publisher}</span>` : ''}
+                            ${r.category ? `<span class="bg-indigo-50 text-indigo-600 text-xs px-2.5 py-1 rounded-md font-bold border border-indigo-100"><i class="fa-solid fa-tag mr-1"></i>${r.category}</span>` : ''}
+                            ${r.author ? `<span class="bg-slate-50 text-slate-600 text-xs px-2.5 py-1 rounded-md border border-slate-200 font-bold"><i class="fa-solid fa-pen-nib mr-1"></i>${r.author}</span>` : ''}
+                            ${r.publisher ? `<span class="bg-slate-50 text-slate-600 text-xs px-2.5 py-1 rounded-md border border-slate-200 font-bold"><i class="fa-solid fa-building mr-1"></i>${r.publisher}</span>` : ''}
                         </div>
-                        <p class="text-xs font-bold text-slate-400 mb-1">📖 故事大綱：</p>
+                        <p class="text-xs font-bold text-slate-400 mb-2 tracking-widest uppercase">📖 故事大綱</p>
                         <div class="text-sm text-slate-700 leading-relaxed">
                             ${(r.content||'').replace(/\n/g, '<br>')}
                         </div>
@@ -1151,11 +1146,11 @@
 
             tipList.innerHTML = tips.length ? tips.map((r, index) => `
                 <details class="bg-white rounded-2xl shadow-sm border border-slate-100 group fade-in-up" ${kw ? 'open' : ''}>
-                    <summary class="font-bold text-slate-700 p-5 cursor-pointer outline-none flex justify-between items-start hover:bg-amber-50/50 rounded-2xl transition text-sm md:text-base leading-snug">
-                        <span class="mr-4">${index + 1}. ${r.title}</span>
+                    <summary class="font-bold text-slate-700 p-4 md:p-5 cursor-pointer outline-none flex justify-between items-start hover:bg-amber-50/50 rounded-2xl transition text-sm md:text-base leading-snug">
+                        <span class="mr-4 mt-0.5">${index + 1}. ${r.title}</span>
                         <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center shrink-0 group-hover:bg-amber-100 transition"><i class="fa-solid fa-chevron-down text-amber-500 group-open:rotate-180 transition-transform"></i></div>
                     </summary>
-                    <div class="p-6 pt-2 text-sm text-slate-600 border-t border-slate-50 mt-1 leading-relaxed">
+                    <div class="p-5 md:p-6 pt-2 text-sm text-slate-600 border-t border-slate-50 mt-1 leading-relaxed">
                         ${(r.content||'').replace(/\n/g, '<br>')}
                     </div>
                 </details>
@@ -1163,11 +1158,11 @@
 
             qaList.innerHTML = qas.length ? qas.map(r => `
                 <details class="bg-white rounded-2xl shadow-sm border border-slate-100 group fade-in-up" ${kw ? 'open' : ''}>
-                    <summary class="font-bold text-slate-700 p-5 cursor-pointer outline-none flex justify-between items-start hover:bg-sky-50/50 rounded-2xl transition text-sm md:text-base leading-snug">
-                        <span class="mr-4">Q: ${r.title}</span>
+                    <summary class="font-bold text-slate-700 p-4 md:p-5 cursor-pointer outline-none flex justify-between items-start hover:bg-sky-50/50 rounded-2xl transition text-sm md:text-base leading-snug">
+                        <span class="mr-4 mt-0.5"><span class="text-sky-500 font-black mr-1">Q:</span> ${r.title}</span>
                         <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center shrink-0 group-hover:bg-sky-100 transition"><i class="fa-solid fa-chevron-down text-sky-500 group-open:rotate-180 transition-transform"></i></div>
                     </summary>
-                    <div class="p-6 pt-2 text-sm text-slate-600 border-t border-slate-50 mt-1 leading-relaxed">
+                    <div class="p-5 md:p-6 pt-2 text-sm text-slate-600 border-t border-slate-50 mt-1 leading-relaxed">
                         ${(r.content||'').replace(/\n/g, '<br>')}
                     </div>
                 </details>
@@ -1415,8 +1410,8 @@
             if (!loggedInCompanion) return;
             const btnChat = document.getElementById('tab-btn-chat');
             const unreadCount = loggedInCompanion.messages ? loggedInCompanion.messages.filter(m => m.sender === 'admin' && !m.isRead).length : 0;
-            const badgeHtml = unreadCount > 0 ? `<span class="bg-rose-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-md ml-auto animate-pulse">${unreadCount} 訊息</span>` : '';
-            btnChat.innerHTML = `<i class="fa-solid fa-headset w-6 text-lg"></i> <span class="ml-2 text-base mr-auto">聯繫公司窗口</span> ${badgeHtml}`;
+            const badgeHtml = unreadCount > 0 ? `<span class="bg-rose-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-md ml-1.5 md:ml-auto animate-pulse">${unreadCount}</span>` : '';
+            btnChat.innerHTML = `<i class="fa-solid fa-headset md:w-6 text-lg"></i> <span class="ml-2 text-sm md:text-base md:mr-auto whitespace-nowrap">聯繫公司窗口</span> ${badgeHtml}`;
         }
 
         function renderCompanionDashboard() {
@@ -1436,7 +1431,8 @@
             const contentChat = document.getElementById('dash-content-chat');
             const contentResources = document.getElementById('dash-content-resources');
 
-            const inactiveClass = "w-full text-left px-5 py-4 rounded-2xl font-bold transition-all duration-300 flex items-center text-slate-500 hover:bg-white hover:text-indigo-600 hover:shadow-sm border border-transparent hover:border-slate-100 hover:-translate-y-1";
+            const baseBtnClass = "flex-1 min-w-[150px] md:w-full justify-center md:justify-start px-4 py-3 md:px-5 md:py-4 rounded-2xl font-bold transition-all duration-300 flex items-center shrink-0 ";
+            const inactiveClass = baseBtnClass + "text-slate-500 hover:bg-white hover:text-indigo-600 hover:shadow-sm border border-transparent hover:border-slate-100 md:hover:-translate-y-1";
 
             btnSchedule.className = inactiveClass;
             btnChat.className = inactiveClass;
@@ -1447,11 +1443,11 @@
             contentResources.classList.add('hidden');
 
             if (tab === 'schedule') {
-                btnSchedule.className = "w-full text-left px-5 py-4 rounded-2xl font-bold transition-all duration-300 flex items-center bg-indigo-500 text-white shadow-md shadow-indigo-500/20 hover:-translate-y-1";
+                btnSchedule.className = baseBtnClass + "bg-indigo-500 text-white shadow-md shadow-indigo-500/20 md:hover:-translate-y-1";
                 contentSchedule.classList.remove('hidden');
                 renderCompanionSchedule();
             } else if (tab === 'chat') {
-                btnChat.className = "w-full text-left px-5 py-4 rounded-2xl font-bold transition-all duration-300 flex items-center bg-teal-500 text-white shadow-md shadow-teal-500/20 hover:-translate-y-1";
+                btnChat.className = baseBtnClass + "bg-teal-500 text-white shadow-md shadow-teal-500/20 md:hover:-translate-y-1";
                 contentChat.classList.remove('hidden');
                 
                 let hasUnread = false;
@@ -1464,7 +1460,7 @@
                 if(hasUnread) saveCompanionToFirebase(compInDB); 
                 renderCompanionChat();
             } else if (tab === 'resources') {
-                btnResources.className = "w-full text-left px-5 py-4 rounded-2xl font-bold transition-all duration-300 flex items-center bg-amber-500 text-white shadow-md shadow-amber-500/20 hover:-translate-y-1";
+                btnResources.className = baseBtnClass + "bg-amber-500 text-white shadow-md shadow-amber-500/20 md:hover:-translate-y-1";
                 contentResources.classList.remove('hidden');
             }
         }

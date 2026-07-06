@@ -13,6 +13,7 @@
     <style>
         body { font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif; color: #334155; }
         
+        /* 唯美的呼吸漸層背景板 */
         .animated-bg {
             background: linear-gradient(-45deg, #eef2ff, #f8fafc, #f0fdfa, #fdf4ff);
             background-size: 400% 400%;
@@ -24,22 +25,29 @@
             100% { background-position: 0% 50%; }
         }
 
+        /* 唯美滾動條 */
         .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         
+        /* 聊天氣泡 */
         .chat-bubble-admin { background-color: #f1f5f9; color: #334155; border-bottom-left-radius: 0; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
         .chat-bubble-user { background-image: linear-gradient(to right, #4f46e5, #6366f1); color: #ffffff; border-bottom-right-radius: 0; box-shadow: 0 2px 6px rgba(79,70,229,0.2); }
         
+        /* 絲滑淡入往上浮現動畫 (給卡片跟頁面用) */
         .fade-in-up { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(15px); }
-        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
 
+        /* Toast 動畫設定 */
         @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes slideOutRight { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }
         .toast-enter { animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .toast-exit { animation: slideOutRight 0.3s ease-in forwards; }
 
+        /* 隱藏 details 預設三角形 */
         details > summary { list-style: none; }
         details > summary::-webkit-details-marker { display: none; }
     </style>
@@ -278,13 +286,18 @@
                 </div>
 
                 <div id="dash-content-resources" class="hidden flex-1 flex flex-col h-full overflow-hidden bg-slate-50/50 fade-in-up">
-                    <div class="bg-gradient-to-r from-amber-50 to-orange-50 px-8 py-6 border-b border-amber-100/50 shrink-0 flex justify-between items-center">
+                    <div class="bg-gradient-to-r from-amber-50 to-orange-50 px-8 py-6 border-b border-amber-100/50 shrink-0 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                         <div>
                             <h3 class="text-xl font-black text-amber-900 flex items-center"><i class="fa-solid fa-book-sparkles mr-3 text-amber-500"></i>教學資源庫</h3>
                             <p class="text-xs text-amber-700 font-bold mt-1">專屬教材庫、SOP流程與常見問題</p>
                         </div>
+                        <div class="relative w-full md:w-64">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-amber-500/70"><i class="fa-solid fa-magnifying-glass"></i></span>
+                            <input type="text" id="comp-res-search" oninput="renderCompanionResources()" placeholder="搜尋關鍵字 (例: SEL)" class="w-full pl-10 pr-4 py-2.5 text-sm bg-white border border-amber-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-sm transition font-bold text-amber-900 placeholder:text-amber-300">
+                        </div>
                     </div>
                     <div class="p-6 md:p-8 overflow-y-auto custom-scrollbar flex-1 space-y-10">
+                        
                         <section>
                             <h4 class="text-xl font-black text-slate-800 border-b-2 border-indigo-200 pb-3 mb-5 flex items-center"><div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center mr-3 text-sm"><i class="fa-solid fa-list-check"></i></div>接案與服務流程</h4>
                             <div class="space-y-4">
@@ -477,7 +490,6 @@
                         <div class="col-span-3"><label class="block text-xs font-bold text-slate-500 mb-1.5">核心專長</label><input type="text" id="edit-skills" class="w-full border-2 border-slate-200 p-2.5 rounded-xl outline-none focus:border-indigo-500 transition"></div>
                         <div><label class="block text-xs font-bold text-slate-500 mb-1.5">定價時薪</label><input type="number" id="edit-wage" class="w-full border-2 border-slate-200 p-2.5 rounded-xl outline-none focus:border-indigo-500 transition font-bold text-indigo-600"></div>
                         <div class="col-span-2"><label class="block text-xs font-bold text-slate-500 mb-1.5">具備證照</label><input type="text" id="edit-license" class="w-full border-2 border-slate-200 p-2.5 rounded-xl outline-none focus:border-indigo-500 transition"></div>
-                        
                         <div class="col-span-3 bg-slate-50 p-4 rounded-xl border border-slate-100 flex flex-wrap gap-4 items-end">
                             <div class="flex-1"><label class="block text-xs font-bold text-slate-500 mb-1.5">中市托育登記證</label>
                                 <select id="edit-tc-cert" onchange="toggleEditDistrict()" class="w-full border-2 border-slate-200 p-2.5 rounded-xl outline-none focus:border-indigo-500 transition bg-white">
@@ -490,7 +502,6 @@
                                 </select>
                             </div>
                         </div>
-
                         <div><label class="block text-xs font-bold text-slate-500 mb-1.5">接受小月齡</label><select id="edit-infant" class="w-full border-2 border-slate-200 p-2.5 rounded-xl outline-none focus:border-indigo-500 transition"><option value="false">否</option><option value="true">是</option></select></div>
                         <div><label class="block text-xs font-bold text-slate-500 mb-1.5">有無經驗</label><select id="edit-exp" class="w-full border-2 border-slate-200 p-2.5 rounded-xl outline-none focus:border-indigo-500 transition"><option value="false">無經驗</option><option value="true">有經驗</option></select></div>
                         <div><label class="block text-xs font-bold text-slate-500 mb-1.5">交通方式</label><input type="text" id="edit-transport" class="w-full border-2 border-slate-200 p-2.5 rounded-xl outline-none focus:border-indigo-500 transition"></div>
@@ -518,7 +529,7 @@
                     <form id="appt-form" onsubmit="addAppointment(event)" class="space-y-4">
                         <input type="hidden" id="appt-comp-id">
                         <div><label class="block text-[11px] font-bold text-slate-500 mb-1.5">預約日期*</label><input type="date" id="appt-date" required class="w-full border-2 border-slate-200 p-2.5 rounded-xl outline-none focus:border-teal-500 text-sm transition"></div>
-                        <div><label class="block text-[11px] font-bold text-slate-500 mb-1.5">預約時段*</label><input type="text" id="appt-time" placeholder="14:00 - 17:00" required class="w-full border-2 border-slate-200 p-2.5 rounded-xl outline-none focus:border-teal-500 text-sm transition"></div>
+                        <div><label class="block text-[11px] font-bold text-slate-500 mb-1.5">預約時段 (例: 14:00 - 17:00)*</label><input type="text" id="appt-time" placeholder="14:00 - 17:00" required class="w-full border-2 border-slate-200 p-2.5 rounded-xl outline-none focus:border-teal-500 text-sm transition"></div>
                         <div><label class="block text-[11px] font-bold text-slate-500 mb-1.5">家長姓名*</label><input type="text" id="appt-parent" required class="w-full border-2 border-slate-200 p-2.5 rounded-xl outline-none focus:border-teal-500 text-sm transition"></div>
                         <div class="grid grid-cols-2 gap-3">
                             <div><label class="block text-[11px] font-bold text-slate-500 mb-1.5">幼兒姓名*</label><input type="text" id="appt-child" required class="w-full border-2 border-slate-200 p-2.5 rounded-xl outline-none focus:border-teal-500 text-sm transition"></div>
@@ -722,7 +733,6 @@
         }
 
         async function checkAndSeedDatabase() {
-            // ★ 初始化管理員密碼
             const settingsSnapshot = await db.collection("settings").doc("admin").get();
             if (!settingsSnapshot.exists) {
                 await db.collection("settings").doc("admin").set({ password: "play25" });
@@ -868,7 +878,6 @@
             }
         }
 
-        // ★ 新增：修改密碼相關功能
         function openChangePwdModal() {
             document.getElementById('new-admin-pwd').value = "";
             document.getElementById('modal-change-pwd').classList.remove('hidden');
@@ -1069,11 +1078,22 @@
             
             if(!lessonList) return; 
 
-            const lessons = resourcesData.filter(r => r.type === 'lesson');
-            const songs = resourcesData.filter(r => r.type === 'song');
-            const books = resourcesData.filter(r => r.type === 'book');
-            const tips = resourcesData.filter(r => r.type === 'tip');
-            const qas = resourcesData.filter(r => r.type === 'qa');
+            // ★ 取得搜尋關鍵字
+            const searchInput = document.getElementById('comp-res-search');
+            const kw = searchInput ? searchInput.value.toLowerCase().trim() : '';
+
+            // 資源過濾邏輯
+            const filterRes = (r) => {
+                if (!kw) return true;
+                const fields = [r.title, r.content, r.category, r.author, r.creator].map(f => (f || '').toLowerCase());
+                return fields.some(f => f.includes(kw));
+            };
+
+            const lessons = resourcesData.filter(r => r.type === 'lesson' && filterRes(r));
+            const songs = resourcesData.filter(r => r.type === 'song' && filterRes(r));
+            const books = resourcesData.filter(r => r.type === 'book' && filterRes(r));
+            const tips = resourcesData.filter(r => r.type === 'tip' && filterRes(r));
+            const qas = resourcesData.filter(r => r.type === 'qa' && filterRes(r));
 
             lessonList.innerHTML = lessons.length ? lessons.map(r => `
                 <a href="${r.link}" target="_blank" class="block bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md hover:-translate-y-1 transition group fade-in-up">
@@ -1083,10 +1103,10 @@
                         <i class="fa-solid fa-arrow-up-right-from-square text-indigo-300 text-sm"></i>
                     </div>
                 </a>
-            `).join('') : '<p class="text-sm text-slate-400 py-2 col-span-2">尚無教案資料。</p>';
+            `).join('') : `<p class="text-sm text-slate-400 py-2 col-span-2">${kw ? '找不到符合搜尋的教案。' : '尚無教案資料。'}</p>`;
 
             songList.innerHTML = songs.length ? songs.map((r) => `
-                <details class="bg-white rounded-2xl shadow-sm border border-slate-100 group fade-in-up">
+                <details class="bg-white rounded-2xl shadow-sm border border-slate-100 group fade-in-up" ${kw ? 'open' : ''}>
                     <summary class="font-bold text-slate-700 p-5 cursor-pointer outline-none flex justify-between items-center hover:bg-pink-50/50 rounded-2xl transition text-sm md:text-base leading-snug">
                         <div class="flex items-center truncate pr-4">
                             <span class="bg-pink-100 text-pink-600 text-xs px-2 py-1 rounded mr-3 shrink-0"><i class="fa-solid fa-play"></i></span>
@@ -1104,10 +1124,10 @@
                         </div>
                     </div>
                 </details>
-            `).join('') : '<p class="text-sm text-slate-400 py-2">尚無歌曲資料。</p>';
+            `).join('') : `<p class="text-sm text-slate-400 py-2">${kw ? '找不到符合搜尋的歌曲。' : '尚無歌曲資料。'}</p>`;
 
             bookList.innerHTML = books.length ? books.map((r) => `
-                <details class="bg-white rounded-2xl shadow-sm border border-slate-100 group fade-in-up">
+                <details class="bg-white rounded-2xl shadow-sm border border-slate-100 group fade-in-up" ${kw ? 'open' : ''}>
                     <summary class="font-bold text-slate-700 p-5 cursor-pointer outline-none flex justify-between items-center hover:bg-purple-50/50 rounded-2xl transition text-sm md:text-base leading-snug">
                         <div class="flex items-center truncate pr-4">
                             <span class="bg-purple-100 text-purple-600 text-xs px-2 py-1 rounded mr-3 shrink-0"><i class="fa-solid fa-book-open-reader"></i></span>
@@ -1127,10 +1147,10 @@
                         </div>
                     </div>
                 </details>
-            `).join('') : '<p class="text-sm text-slate-400 py-2">尚無繪本資料。</p>';
+            `).join('') : `<p class="text-sm text-slate-400 py-2">${kw ? '找不到符合搜尋的繪本。' : '尚無繪本資料。'}</p>`;
 
             tipList.innerHTML = tips.length ? tips.map((r, index) => `
-                <details class="bg-white rounded-2xl shadow-sm border border-slate-100 group fade-in-up">
+                <details class="bg-white rounded-2xl shadow-sm border border-slate-100 group fade-in-up" ${kw ? 'open' : ''}>
                     <summary class="font-bold text-slate-700 p-5 cursor-pointer outline-none flex justify-between items-start hover:bg-amber-50/50 rounded-2xl transition text-sm md:text-base leading-snug">
                         <span class="mr-4">${index + 1}. ${r.title}</span>
                         <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center shrink-0 group-hover:bg-amber-100 transition"><i class="fa-solid fa-chevron-down text-amber-500 group-open:rotate-180 transition-transform"></i></div>
@@ -1139,10 +1159,10 @@
                         ${(r.content||'').replace(/\n/g, '<br>')}
                     </div>
                 </details>
-            `).join('') : '<p class="text-sm text-slate-400 py-2">尚無實戰秘笈。</p>';
+            `).join('') : `<p class="text-sm text-slate-400 py-2">${kw ? '找不到符合搜尋的秘笈。' : '尚無實戰秘笈。'}</p>`;
 
             qaList.innerHTML = qas.length ? qas.map(r => `
-                <details class="bg-white rounded-2xl shadow-sm border border-slate-100 group fade-in-up">
+                <details class="bg-white rounded-2xl shadow-sm border border-slate-100 group fade-in-up" ${kw ? 'open' : ''}>
                     <summary class="font-bold text-slate-700 p-5 cursor-pointer outline-none flex justify-between items-start hover:bg-sky-50/50 rounded-2xl transition text-sm md:text-base leading-snug">
                         <span class="mr-4">Q: ${r.title}</span>
                         <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center shrink-0 group-hover:bg-sky-100 transition"><i class="fa-solid fa-chevron-down text-sky-500 group-open:rotate-180 transition-transform"></i></div>
@@ -1151,7 +1171,7 @@
                         ${(r.content||'').replace(/\n/g, '<br>')}
                     </div>
                 </details>
-            `).join('') : '<p class="text-sm text-slate-400 py-2">尚無常見問題。</p>';
+            `).join('') : `<p class="text-sm text-slate-400 py-2">${kw ? '找不到符合搜尋的 QA。' : '尚無常見問題。'}</p>`;
         }
 
         function executeSearch() {
@@ -1686,10 +1706,36 @@
             const compId = document.getElementById('appt-comp-id').value;
             const comp = companionsData.find(p => p.id === compId);
             if(!comp) return;
+
+            const dateVal = document.getElementById('appt-date').value;
+            const timeVal = document.getElementById('appt-time').value;
+
+            // ★ 新增：排程防呆檢查 (時間重疊)
+            const parseTime = (str) => {
+                if(!str) return null;
+                const m = str.match(/(\d{1,2}):(\d{2})/);
+                return m ? parseInt(m[1])*60 + parseInt(m[2]) : null;
+            };
+            const [newStart, newEnd] = timeVal.split('-').map(parseTime);
+            
+            if (newStart !== null && newEnd !== null) {
+                const isConflict = comp.appointments.some(a => {
+                    if (a.date !== dateVal) return false;
+                    const [s, e] = a.time.split('-').map(parseTime);
+                    if (s === null || e === null) return false;
+                    return (newStart < e && s < newEnd);
+                });
+
+                if (isConflict) {
+                    showToast("⚠️ 派案失敗：時段衝突！該人員在同一天已有重疊的排程。", false);
+                    return; // 終止派案
+                }
+            }
+
             const newAppt = {
                 id: "APT-" + Date.now().toString().slice(-5),
-                date: document.getElementById('appt-date').value,
-                time: document.getElementById('appt-time').value,
+                date: dateVal,
+                time: timeVal,
                 parentName: document.getElementById('appt-parent').value,
                 childName: document.getElementById('appt-child').value,
                 age: document.getElementById('appt-age').value,
@@ -1700,6 +1746,7 @@
             };
             comp.appointments.push(newAppt);
             saveCompanionToFirebase(comp); 
+            
             document.getElementById('appt-form').reset();
             document.getElementById('appt-wage').value = comp.hourlyWage;
             showToast(`已發送「新派案通知信」至 ${comp.name} 的信箱。`);
